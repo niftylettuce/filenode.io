@@ -47,7 +47,7 @@ app.get('/', function(req, res, next) {
       { acl: 'public-read' },
       [ 'starts-with', '$key', 'uploads/' ],
       { success_action_redirect: 'http://localhost:3000/redirect' },
-      [ 'starts-with', '$Content-Type', '' ],
+      //[ 'starts-with', '$Content-Type', '' ],
       [ 'content-length-range', 0, 524288000 ]
     ]
   }
