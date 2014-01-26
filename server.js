@@ -14,10 +14,8 @@ var awsConfig = {
   secretAccessKey: process.env.KEY
 }
 
-var bucketUrl = process.env.BUCKET.toLowerCase()
-var bucketName = bucketUrl.replace('http://', '')
-bucketName = bucketName.replace('https://', '')
-bucketName = bucketName.replace('s3.amazonaws.com', '')
+var bucketName = process.env.BUCKET.toLowerCase()
+var bucketUrl = 'http://' + bucketName + '.s3.amazonaws.com'
 
 aws.config.update(awsConfig)
 
