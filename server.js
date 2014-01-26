@@ -7,7 +7,7 @@ var aws = require('aws-sdk')
 var crypto = require('crypto')
 var moment = require('moment')
 
-var maxFileSize = 10240
+var maxFileSize = 1048576 // 1 gb
 
 var awsConfig = {
   accessKeyId: process.env.ID,
@@ -46,7 +46,7 @@ app.get('/', function(req, res, next) {
       { bucket: bucketName },
       { acl: 'public-read' },
       [ 'starts-with', '$key', 'uploads/' ],
-      { success_action_redirect: 'http://localhost:3000/' },
+      { success_action_redirect: 'http://localhost:3000/redirect' },
       [ 'starts-with', '$Content-Type', '' ],
       [ 'content-length-range', 0, 524288000 ]
     ]
@@ -58,29 +58,30 @@ app.get('/', function(req, res, next) {
 
   res.render('', {
     accessKeyId: awsConfig.accessKeyId,
-    success_action_redirect: 'http://localhost:3000/',
+    success_action_redirect: 'http://localhost:3000/redirect',
     policy: policy,
     signature: crypto.createHmac('sha1', awsConfig.secretAccessKey).update(policy).digest('base64'),
     bucketUrl: bucketUrl
   })
 })
 
-app.post('/', function(req, res, next) {
+app.get('/redirect', function(req, res, next) {
   console.dir(req.query, req.body)
-  res.send(200)
+  next()
 }, verifyFile)
 
 function verifyFile(req, res, next) {
   s3.headObject({
-    Bucket: req.body.bucket,
-    Key: req.body.key
+    Bucket: req.query.bucket,
+    Key: req.query.key
   }, function(err, data) {
     if (err)
       return res.send(500, { message: err.message })
     console.dir('data', data)
+    // TODO: remove the file?
     if (data.ContentLength > maxFileSize)
       return res.send(500, { message: 'File too big' })
-    res.send(200)
+    res.redirect('http://' + req.query.bucket + '.s3.amazonaws.com/' + req.query.key)
   })
 }
 
