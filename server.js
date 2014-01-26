@@ -14,7 +14,10 @@ var awsConfig = {
   secretAccessKey: process.env.KEY
 }
 
-var bucketUrl = process.env.BUCKET
+var bucketUrl = process.env.BUCKET.toLowerCase()
+var bucketName = bucketUrl.replace('http://', '')
+bucketName = bucketName.replace('https://', '')
+bucketName = bucketName.replace('s3.amazonaws.com', '')
 
 aws.config.update(awsConfig)
 
@@ -42,7 +45,7 @@ app.get('/', function(req, res, next) {
   var policy = {
     expiration: moment.utc().add('days', 1).toISOString(),
     conditions: [
-      { bucket: 'filenode' },
+      { bucket: bucketName },
       { acl: 'public-read' },
       [ 'starts-with', '$key', 'uploads/' ],
       { success_action_redirect: 'http://localhost:3000/' },
