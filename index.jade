@@ -1,0 +1,91 @@
+!!! 5
+html
+  head
+    title Filenode
+  body
+    //- <https://doc.s3.amazonaws.com/proposals/post.html>
+    form(action=bucketUrl, method='post', enctype='multipart/form-data')
+
+      legend upload
+
+      //- `AWSAccessKeyId`
+      //-
+      //- The AWS Access Key ID of the owner of the bucket
+      //- who will be granting Anonymous access for a request
+      //- that satisfies the set of constraints in the Policy.
+      //-
+      input(type='hidden', name='AWSAccessKeyId', value=accessKeyId)
+
+      //- `acl`
+      //-
+      //- One of our Canned Access Control Lists:
+      //- private, public-read, public-read-write,
+      //- or authenticated-read.
+      //-
+      //- <http://docs.amazonwebservices.com/AmazonS3/2006-03-01/RESTAccessPolicy.html>
+      //-
+      input(type='hidden', name='acl', value='public-read')
+
+      //-
+      //- `Cache-Control`
+      //- `Content-Type`
+      //- `Content-Disposition`
+      //- `Content-Encoding`
+      //- `Expires`
+      //-
+      //- <http://docs.amazonwebservices.com/AmazonS3/2006-03-01/RESTObjectPUT.html>
+      //-
+      input(type='hidden', name='Content-Type', value='image/jpeg')
+
+      //- `key` (required)
+      //-
+      //- The name that the uploaded key should have.
+      //-
+      //- <http://docs.amazonwebservices.com/AmazonS3/2006-03-01/UsingKeys.html>
+      //-
+      input(type='hidden', name='key', value='uploads/${filename}')
+
+      //- `policy`
+      //-
+      //- Security Policy describing what is permitted in the
+      //- request. Requests without a security policy are
+      //- considered anonymous and only work on
+      //- publicly writable buckets.
+      //-
+      //- <https://doc.s3.amazonaws.com/proposals/post.html#Access_Control>
+      //-
+      input(type='hidden', name='policy', value=policy)
+
+      //- `redirect`
+      //-
+      //- URL which client is redirected to on
+      //- upload successful completion
+      //-
+      //- <https://doc.s3.amazonaws.com/proposals/post.html#Dealing_with_Success>
+      //-
+      input(type='hidden', name='success_action_redirect', value=success_action_redirect)
+
+      //- `signature`
+      //-
+      //- HMAC signature using the secret key of the provided
+      //- AWSAccessKeyID on the Policy.
+      //-
+      //- <https://doc.s3.amazonaws.com/proposals/post.html#Access_Control>
+      //-
+      input(type='hidden', name='signature', value=signature)
+
+      //- Field names prefixed with `x-amz-meta-`
+      //-
+      //- User-specified metadata. Amazon S3 will not validate the actual data.
+      //-
+      //- <http://docs.amazonwebservices.com/AmazonS3/2006-03-01/RESTObjectPUT.html>
+      //-
+
+      //- `file` (required)
+      //-
+      //- Data of the file being uploaded. This may either be
+      //- a file input type or may be a textarea input field.
+      //-
+      input(type='file', name='file')
+
+      input(type='submit')

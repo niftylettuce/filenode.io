@@ -1,0 +1,26 @@
+{
+  "name": "filenode",
+  "version": "0.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/niftylettuce/filenode.io.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/niftylettuce/filenode.io/issues"
+  },
+  "homepage": "https://github.com/niftylettuce/filenode.io",
+  "dependencies": {
+    "aws-sdk": "~2.0.0-rc3",
+    "jade": "~0.35.0",
+    "express": "~3.4.7",
+    "open": "0.0.4",
+    "moment": "~2.4.0"
+  }
+}
